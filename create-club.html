@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Create Club — AnimeTracker</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <script src="https://unpkg.com/@supabase/supabase-js"></script>
+  <script>
+    const SUPABASE_URL = "https://hfhvbvddffbezjecqusy.supabase.co"; // replace
+    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhmaHZidmRkZmZiZXpqZWNxdXN5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NTUyNjMsImV4cCI6MjA3NDUzMTI2M30.6_n4KVqrK6KlivcrD5CQeAcp1Wr8Ng_8Jqp2e_uiviA"; // replace
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  </script>
+</head>
+<body class="p-6">
+  <main class="max-w-lg mx-auto bg-white p-6 rounded shadow">
+    <h1 class="text-xl font-bold">Create Club</h1>
+    <form id="createForm" class="mt-4 space-y-3">
+      <input id="name" placeholder="Club name" class="w-full border p-2 rounded" required />
+      <textarea id="description" placeholder="Description" class="w-full border p-2 rounded"></textarea>
+      <div class="flex gap-2">
+        <button type="submit" class="btn btn-primary">Create</button>
+        <a href="clubs.html" class="btn">Cancel</a>
+      </div>
+      <div id="msg" class="muted small mt-2"></div>
+    </form>
+  </main>
+
+  <script>
+    (async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) { location.href = 'login.html'; return; }
+
+      document.getElementById('createForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const name = document.getElementById('name').value.trim();
+        const description = document.getElementById('description').value.trim();
+
+        if (!name) { document.getElementById('msg').textContent = 'Name required'; return; }
+
+        const { error } = await supabase.from('clubs').insert([{
+          name, description, created_by: user.id
+        }]);
+
+        if (error) {
+          document.getElementById('msg').textContent = 'Error: ' + error.message;
+        } else {
+          location.href = 'clubs.html';
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

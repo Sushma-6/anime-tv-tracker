@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Dashboard — AnimeTracker</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <!-- Tailwind (if using CDN) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const supabase = window.supabase.createClient(
+      "https://hfhvbvddffbezjecqusy.supabase.co",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhmaHZidmRkZmZiZXpqZWNxdXN5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NTUyNjMsImV4cCI6MjA3NDUzMTI2M30.6_n4KVqrK6KlivcrD5CQeAcp1Wr8Ng_8Jqp2e_uiviA"
+    );
+  </script>
+</head>
+<body class="p-6 bg-gray-50">
+
+  <!-- ✅ Header -->
+  <header class="flex items-center justify-between p-4 bg-purple-600 text-white rounded-xl mb-6">
+    <h1 class="text-xl font-bold">AnimeTracker</h1>
+    <div class="flex items-center gap-4">
+      <span id="userName" class="font-medium"></span>
+      <button id="logoutBtn" class="px-3 py-1 bg-red-500 rounded-lg">Logout</button>
+    </div>
+  </header>
+
+  <!-- Page Title -->
+  <h2 class="text-2xl font-bold mb-4">My Watchlist</h2>
+
+  <!-- ✅ Add Anime button -->
+  <a href="add.html"
+     class="inline-block mb-4 px-4 py-2 bg-purple-600 text-white rounded-xl shadow hover:bg-purple-700">
+    + Add Anime
+  </a>
+
+  <!-- Anime cards grid -->
+  <div id="watchlist" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
+
+  <script>
+    (async () => {
+      // ✅ Check login
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        window.location.href = "login.html";
+        return;
+      }
+
+      // ✅ Load profile for header
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("username, full_name, email")
+        .eq("id", user.id)
+        .single();
+
+      document.getElementById("userName").textContent =
+        profile?.full_name || profile?.username || user.email;
+
+      // ✅ Logout button
+      document.getElementById("logoutBtn").addEventListener("click", async () => {
+        await supabase.auth.signOut();
+        window.location.href = "login.html";
+      });
+
+      // ✅ Load watchlist
+      async function loadWatchlist() {
+        const { data, error } = await supabase
+          .from("watchlist")
+          .select("*")
+          .eq("user_id", user.id)
+          .order("created_at", { ascending: false });
+
+        const container = document.getElementById("watchlist");
+        container.innerHTML = "";
+
+        if (data) {
+          data.forEach(anime => {
+            const progress = anime.total_episodes
+              ? Math.round((anime.episodes / anime.total_episodes) * 100)
+              : 0;
+
+            const card = `
+              <div class="bg-white rounded-2xl shadow p-4">
+                <img src="${anime.image_url || 'default.jpg'}" alt="${anime.title}" class="rounded-xl w-full h-48 object-cover" />
+                <h3 class="text-lg font-semibold mt-2">${anime.title}</h3>
+                <p class="text-sm text-gray-500">${anime.status}</p>
+                <p class="text-sm text-gray-500">Progress: ${anime.episodes}/${anime.total_episodes || "?"}</p>
+                <div class="w-full bg-gray-200 rounded-full h-2 mt-2">
+                  <div class="bg-purple-600 h-2 rounded-full" style="width: ${progress}%"></div>
+                </div>
+              </div>
+            `;
+            container.innerHTML += card;
+          });
+        }
+      }
+
+      loadWatchlist();
+    })();
+  </script>
+</body>
+</html>
+

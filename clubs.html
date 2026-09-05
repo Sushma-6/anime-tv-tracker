@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Clubs — AnimeTracker</title>
+
+  <!-- ✅ Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Your own stylesheet (optional overrides) -->
+  <link rel="stylesheet" href="assets/css/style.css" />
+
+  <!-- Supabase -->
+  <script src="https://unpkg.com/@supabase/supabase-js"></script>
+  <script>
+    const SUPABASE_URL = "https://hfhvbvddffbezjecqusy.supabase.co"; 
+    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhmaHZidmRkZmZiZXpqZWNxdXN5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NTUyNjMsImV4cCI6MjA3NDUzMTI2M30.6_n4KVqrK6KlivcrD5CQeAcp1Wr8Ng_8Jqp2e_uiviA"; 
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  </script>
+</head>
+<body class="p-6 bg-gray-50 min-h-screen">
+
+  <main class="max-w-4xl mx-auto">
+    <h1 class="text-2xl font-bold mb-4">Clubs</h1>
+
+    <!-- Search -->
+    <input 
+      type="text" 
+      id="clubSearch" 
+      placeholder="Search clubs..." 
+      class="w-full border rounded-lg p-2 mb-6 shadow-sm"
+    />
+
+    <!-- Clubs list -->
+    <div id="clubsList" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"></div>
+  </main>
+
+  <!-- Scripts -->
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/clubs.js"></script>
+</body>
+</html>
+
+
+
+
+
+  
+
+
+
+
+

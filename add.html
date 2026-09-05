@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Add Anime — AnimeTracker</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <!-- Tailwind (CDN) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const supabase = window.supabase.createClient(
+      "https://hfhvbvddffbezjecqusy.supabase.co  ",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhmaHZidmRkZmZiZXpqZWNxdXN5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NTUyNjMsImV4cCI6MjA3NDUzMTI2M30.6_n4KVqrK6KlivcrD5CQeAcp1Wr8Ng_8Jqp2e_uiviA"
+    );
+  </script>
+</head>
+<body class="p-6 bg-gray-50">
+  <!-- Header -->
+  <header class="flex items-center justify-between p-4 bg-purple-600 text-white rounded-xl mb-6">
+    <h1 class="text-xl font-bold">Add Anime</h1>
+    <a href="dashboard.html" class="px-3 py-1 bg-gray-200 text-black rounded-lg">⬅ Back</a>
+  </header>
+
+  <!-- Form -->
+  <main class="max-w-lg mx-auto bg-white shadow rounded-xl p-6">
+    <form id="animeForm" class="space-y-4">
+      <div>
+        <label class="block text-sm font-medium">Title</label>
+        <input id="title" required class="w-full border rounded-lg p-2" />
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium">Image URL</label>
+        <input id="image_url" placeholder="https://..." class="w-full border rounded-lg p-2" />
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium">Status</label>
+        <select id="status" class="w-full border rounded-lg p-2">
+          <option value="Watching">Watching</option>
+          <option value="Completed">Completed</option>
+          <option value="Plan to Watch">Plan to Watch</option>
+          <option value="Dropped">Dropped</option>
+        </select>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-medium">Episodes Watched</label>
+          <input id="episodes" type="number" min="0" value="0" class="w-full border rounded-lg p-2" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium">Total Episodes</label>
+          <input id="total_episodes" type="number" min="0" class="w-full border rounded-lg p-2" />
+        </div>
+      </div>
+
+      <button type="submit"
+              class="w-full bg-purple-600 text-white py-2 rounded-lg hover:bg-purple-700">
+        ➕ Add to Watchlist
+      </button>
+    </form>
+  </main>
+
+  <script>
+    (async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        window.location.href = "login.html";
+        return;
+      }
+
+      const form = document.getElementById("animeForm");
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const title = document.getElementById("title").value.trim();
+        const image_url = document.getElementById("image_url").value.trim();
+        const status = document.getElementById("status").value;
+        const episodes = parseInt(document.getElementById("episodes").value) || 0;
+        const total_episodes = parseInt(document.getElementById("total_episodes").value) || null;
+
+        const { error } = await supabase.from("watchlist").insert([{
+          user_id: user.id,
+          title,
+          image_url,
+          status,
+          episodes,
+          total_episodes
+        }]);
+
+        if (error) {
+          alert("❌ Error: " + error.message);
+        } else {
+          alert("✅ Anime added!");
+          window.location.href = "dashboard.html";
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
+

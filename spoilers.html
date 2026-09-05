@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spoilers - Anime Tracker</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 text-gray-900">
+
+  <!-- Navbar -->
+  <nav class="flex justify-between items-center px-6 py-4 bg-white shadow">
+    <div class="text-xl font-bold text-purple-600">AnimeTracker</div>
+    <div class="flex space-x-6">
+      <a href="index.html" class="hover:text-purple-600">Dashboard</a>
+      <a href="mylist.html" class="hover:text-purple-600">My List</a>
+      <a href="discover.html" class="hover:text-purple-600">Discover</a>
+      <a href="clubs.html" class="hover:text-purple-600">Clubs</a>
+      <a href="polls.html" class="hover:text-purple-600">Polls</a>
+      <a href="spoilers.html" class="text-purple-600 font-semibold">Spoilers</a>
+    </div>
+  </nav>
+
+  <!-- Page Container -->
+  <div class="max-w-4xl mx-auto p-6">
+    <h1 class="text-2xl font-bold mb-6">Spoilers Section</h1>
+
+    <!-- Add Spoiler Form -->
+    <div class="bg-white shadow rounded-lg p-4 mb-6">
+      <h2 class="font-semibold text-lg mb-3">Add a Spoiler</h2>
+      <form id="spoilerForm" class="space-y-3">
+        <input type="text" id="animeTitle" placeholder="Anime Title" class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500" required>
+        <input type="text" id="postedBy" placeholder="Posted By" class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500" required>
+        <textarea id="spoilerText" placeholder="Write your spoiler..." class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500" required></textarea>
+        <button type="submit" class="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition">Add Spoiler</button>
+      </form>
+    </div>
+
+    <!-- Spoilers List -->
+    <div id="spoilersList">
+      <!-- Spoiler Card Example -->
+      <div class="bg-white shadow rounded-lg p-4 mb-4">
+        <h2 class="font-semibold text-lg">Attack on Titan</h2>
+        <p class="text-sm text-gray-500">Posted by: User123</p>
+        <div class="mt-3">
+          <button class="spoiler-toggle px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition" data-target="spoiler1">
+            Show Spoiler
+          </button>
+          <p id="spoiler1" class="spoiler-text hidden mt-3 text-gray-700">
+            Eren's true plan was to unleash the Rumbling to destroy most of humanity outside Paradis Island.
+          </p>
+        </div>
+      </div>
+
+      <div class="bg-white shadow rounded-lg p-4 mb-4">
+        <h2 class="font-semibold text-lg">One Piece</h2>
+        <p class="text-sm text-gray-500">Posted by: LuffyFan</p>
+        <div class="mt-3">
+          <button class="spoiler-toggle px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition" data-target="spoiler2">
+            Show Spoiler
+          </button>
+          <p id="spoiler2" class="spoiler-text hidden mt-3 text-gray-700">
+            The One Piece is actually connected to Joy Boy’s will and the Ancient Kingdom’s history.
+          </p>
+        </div>
+      </div>
+
+      <div class="bg-white shadow rounded-lg p-4 mb-4">
+        <h2 class="font-semibold text-lg">Naruto Shippuden</h2>
+        <p class="text-sm text-gray-500">Posted by: ShinobiMaster</p>
+        <div class="mt-3">
+          <button class="spoiler-toggle px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition" data-target="spoiler3">
+            Show Spoiler
+          </button>
+          <p id="spoiler3" class="spoiler-text hidden mt-3 text-gray-700">
+            Naruto and Sasuke’s final battle ends with both losing an arm, but gaining mutual respect.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JS for Spoiler Toggle + Add Spoiler -->
+  <script>
+    let spoilerCount = 3; // tracking existing spoilers
+    const spoilersList = document.getElementById('spoilersList');
+    const form = document.getElementById('spoilerForm');
+
+    // Spoiler toggle logic
+    function addSpoilerToggle(button, spoilerText) {
+      button.addEventListener('click', () => {
+        spoilerText.classList.toggle('hidden');
+        button.textContent = spoilerText.classList.contains('hidden') ? "Show Spoiler" : "Hide Spoiler";
+      });
+    }
+
+    // Attach toggle to existing spoilers
+    document.querySelectorAll('.spoiler-toggle').forEach(btn => {
+      const targetId = btn.getAttribute('data-target');
+      const spoilerText = document.getElementById(targetId);
+      addSpoilerToggle(btn, spoilerText);
+    });
+
+    // Add new spoiler dynamically
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      spoilerCount++;
+
+      const animeTitle = document.getElementById('animeTitle').value;
+      const postedBy = document.getElementById('postedBy').value;
+      const spoilerContent = document.getElementById('spoilerText').value;
+
+      const spoilerId = "spoiler" + spoilerCount;
+
+      const newSpoiler = document.createElement('div');
+      newSpoiler.classList.add('bg-white', 'shadow', 'rounded-lg', 'p-4', 'mb-4');
+      newSpoiler.innerHTML = `
+        <h2 class="font-semibold text-lg">${animeTitle}</h2>
+        <p class="text-sm text-gray-500">Posted by: ${postedBy}</p>
+        <div class="mt-3">
+          <button class="spoiler-toggle px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition" data-target="${spoilerId}">
+            Show Spoiler
+          </button>
+          <p id="${spoilerId}" class="spoiler-text hidden mt-3 text-gray-700">${spoilerContent}</p>
+        </div>
+      `;
+
+      spoilersList.prepend(newSpoiler);
+
+      // Add toggle to new spoiler
+      const newButton = newSpoiler.querySelector('.spoiler-toggle');
+      const newSpoilerText = document.getElementById(spoilerId);
+      addSpoilerToggle(newButton, newSpoilerText);
+
+      // Reset form
+      form.reset();
+    });
+  </script>
+
+</body>
+</html>
+
+
+
+
+

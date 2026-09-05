@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Club Polls</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* Center everything */
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      background: #f9fafb;
+      margin: 0;
+      padding: 40px;
+      font-family: Arial, sans-serif;
+    }
+    .container {
+      width: 100%;
+      max-width: 700px;
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    h1, h2 {
+      margin-bottom: 15px;
+    }
+    input {
+      display: block;
+      width: 100%;
+      margin-bottom: 12px;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+    }
+    button {
+      margin-top: 8px;
+      margin-right: 8px;
+      padding: 10px 16px;
+      border: none;
+      border-radius: 6px;
+      background: #4f46e5;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #4338ca;
+    }
+    #pollsList {
+      margin-top: 20px;
+    }
+    .poll {
+      margin-bottom: 25px;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+    }
+    .poll h3 {
+      margin-top: 0;
+    }
+    .option-btn {
+      display: block;
+      margin-top: 8px;
+      width: 100%;
+      text-align: left;
+      background: #e0e7ff;
+      color: #1e1b4b;
+    }
+    .option-btn:hover {
+      background: #c7d2fe;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Club Polls</h1>
+    <p>Vote or create polls for your club!</p>
+
+    <h2>Create a New Poll</h2>
+    <input type="text" id="pollQuestion" placeholder="Poll question..." />
+    <input type="text" class="pollOption" placeholder="Option 1" />
+    <input type="text" class="pollOption" placeholder="Option 2" />
+    <button id="addOptionBtn">+ Add Option</button>
+    <button id="createPollBtn">Create Poll</button>
+
+    <h2>Existing Polls</h2>
+    <div id="pollsList"></div>
+  </div>
+
+  <script>
+    // Load from localStorage
+    let polls = JSON.parse(localStorage.getItem("polls")) || [];
+
+    const pollQuestionInput = document.getElementById("pollQuestion");
+    const addOptionBtn = document.getElementById("addOptionBtn");
+    const createPollBtn = document.getElementById("createPollBtn");
+    const pollsList = document.getElementById("pollsList");
+
+    // Save polls to localStorage
+    function savePolls() {
+      localStorage.setItem("polls", JSON.stringify(polls));
+    }
+
+    // Add more option input fields
+    addOptionBtn.addEventListener("click", () => {
+      const newOption = document.createElement("input");
+      newOption.type = "text";
+      newOption.className = "pollOption";
+      newOption.placeholder = `Option ${document.querySelectorAll(".pollOption").length + 1}`;
+      pollQuestionInput.insertAdjacentElement("afterend", newOption);
+    });
+
+    // Create a poll
+    createPollBtn.addEventListener("click", () => {
+      const question = pollQuestionInput.value.trim();
+      const options = Array.from(document.querySelectorAll(".pollOption"))
+        .map(input => input.value.trim())
+        .filter(opt => opt !== "");
+
+      if (!question || options.length < 2) {
+        alert("Please enter a question and at least 2 options.");
+        return;
+      }
+
+      const poll = {
+        id: Date.now(),
+        question,
+        options: options.map(opt => ({ text: opt, votes: 0 }))
+      };
+
+      polls.push(poll);
+      savePolls();
+      renderPolls();
+
+      // reset inputs
+      pollQuestionInput.value = "";
+      document.querySelectorAll(".pollOption").forEach((input, index) => {
+        if (index < 2) input.value = "";
+        else input.remove();
+      });
+    });
+
+    // Render polls
+    function renderPolls() {
+      pollsList.innerHTML = "";
+
+      polls.forEach(poll => {
+        const pollDiv = document.createElement("div");
+        pollDiv.className = "poll";
+
+        const q = document.createElement("h3");
+        q.innerText = poll.question;
+        pollDiv.appendChild(q);
+
+        poll.options.forEach((opt, index) => {
+          const btn = document.createElement("button");
+          btn.className = "option-btn";
+          btn.innerText = `${opt.text} (${opt.votes} votes)`;
+          btn.addEventListener("click", () => {
+            poll.options[index].votes++;
+            savePolls();
+            renderPolls();
+          });
+          pollDiv.appendChild(btn);
+        });
+
+        pollsList.appendChild(pollDiv);
+      });
+    }
+
+    // Add a default poll if none exist
+    if (polls.length === 0) {
+      polls.push({
+        id: 1,
+        question: "Best Anime of All Time?",
+        options: [
+          { text: "One Piece", votes: 0 },
+          { text: "Naruto", votes: 0 },
+          { text: "Attack on Titan", votes: 0 },
+          { text: "Demon Slayer", votes: 0 }
+        ]
+      });
+      savePolls();
+    }
+
+    renderPolls();
+  </script>
+</body>
+</html>
+

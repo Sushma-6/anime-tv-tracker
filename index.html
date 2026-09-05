@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>AnimeTracker — Dashboard</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+
+</head>
+
+<body>
+ <header>
+  <nav class="navbar">
+    <div class="logo">
+      <img src="assets/images/logo.png" alt="AnimeTracker Logo">
+      <span>AnimeTracker</span>
+    </div>
+
+    <div class="nav-links">
+      <a href="index.html" class="active">Dashboard</a>
+      <a href="mylist.html">My List</a>
+      <a href="discover.html">Discover</a>
+      <a href="clubs.html">Clubs</a>
+      <a href="polls.html">Polls</a>
+      <a href="spoilers.html">Spoilers</a>
+      <a href="help.html">Help</a>
+      <a href="about.html">About</a>
+    </div>
+
+    <!-- Move toggle button here -->
+    <div class="auth-buttons">
+      <button id="theme-toggle" class="btn small">🌙</button>
+      <a href="login.html" class="login">Login</a>
+      <a href="signup.html" class="signup">Sign Up</a>
+    </div>
+  </nav>
+</header>
+
+
+
+  <main class="container main-content">
+    <section class="hero">
+      <h1>Welcome back, Otaku!</h1>
+      <p class="muted">Track your anime journey and connect with fellow fans.</p>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-title">Total Watched</div>
+          <div class="stat-value">247</div>
+          <div class="stat-sub">Series & Movies</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-title">Hours Watched</div>
+          <div class="stat-value">8,420</div>
+          <div class="stat-sub">Time well spent</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-title">Average Rating</div>
+          <div class="stat-value">8.6</div>
+          <div class="stat-sub">Your taste score</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-title">Current Streak</div>
+          <div class="stat-value">12 days</div>
+          <div class="stat-sub">Keep it up!</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <h2>Continue Watching</h2>
+        <a href="mylist.html" class="link-muted">View All →</a>
+      </div>
+
+      <div id="continueGrid" class="card-grid"></div>
+    </section>
+
+    <section class="tiles">
+      <a class="dash-tile" href="mylist.html">
+        <img src="assets/images/my-list.webp" alt="">
+        <div><strong>My List</strong><p class="muted">Manage your collection</p></div>
+      </a>
+      <a class="dash-tile" href="discover.html">
+        <img src="assets/images/discover.webp" alt="">
+        <div><strong>Discover</strong><p class="muted">Find new shows</p></div>
+      </a>
+      <a class="dash-tile" href="clubs.html">
+        <img src="assets/images/clubs.webp" alt="">
+        <div><strong>Clubs</strong><p class="muted">Join discussions</p></div>
+      </a>
+      <a class="dash-tile" href="mylist.html">
+        <img src="assets/images/track-progress.png" alt="">
+        <div><strong>Track Progress</strong><p class="muted">Log episodes</p></div>
+      </a>
+    </section>
+  </main>
+
+
+  <!-- 📊 Analytics Section -->
+<section class="analytics-section">
+  <h2 class="text-xl font-bold mb-4">Analytics Dashboard</h2>
+
+  <div class="analytics-grid">
+    <div>
+      <canvas id="watchedChart"></canvas>
+    </div>
+    <div>
+      <canvas id="ratingChart"></canvas>
+    </div>
+  </div>
+</section>
+
+
+
+
+  <footer class="site-footer">
+    <div class="container">© <span id="year"></span> AnimeTracker — built with ❤</div>
+  </footer>
+
+  <!-- Supabase client -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/dashboard.js"></script>
+  <script src="script.js"></script>
+
+
+</body>
+</html>
+
+
+
+
+
+

@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Club — AnimeTracker</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <script src="https://unpkg.com/@supabase/supabase-js"></script>
+  <script>
+    const SUPABASE_URL = "https://hfhvbvddffbezjecqusy.supabase.co"; 
+    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhmaHZidmRkZmZiZXpqZWNxdXN5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NTUyNjMsImV4cCI6MjA3NDUzMTI2M30.6_n4KVqrK6KlivcrD5CQeAcp1Wr8Ng_8Jqp2e_uiviA"; 
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  </script>
+</head>
+<body class="p-6 bg-gray-50">
+
+  <a href="clubs.html" class="btn">← Back to Clubs</a>
+
+  <main class="max-w-3xl mx-auto mt-6 bg-white p-6 rounded-xl shadow">
+    <header id="clubHeader">
+      <h1 id="clubName" class="text-2xl font-bold">Loading…</h1>
+      <p id="clubDesc" class="muted"></p>
+      <div class="mt-3 flex gap-2">
+        <button id="joinBtn" class="btn btn-primary">Join</button>
+        <button id="leaveBtn" class="btn btn-outline hidden">Leave</button>
+        <!-- ✅ New: Go to Polls button -->
+        <a id="pollsLink" class="btn btn-secondary">Go to Polls</a>
+      </div>
+    </header>
+
+    <section class="mt-6">
+      <h2 class="text-lg font-semibold">Discussions</h2>
+      <form id="postForm" class="mt-3">
+        <textarea id="postContent" rows="3" placeholder="Write something..." class="w-full border rounded p-2"></textarea>
+        <div class="mt-2 flex gap-2">
+          <button type="submit" class="btn btn-primary">Post</button>
+          <span id="postMsg" class="muted"></span>
+        </div>
+      </form>
+
+      <div id="postsList" class="mt-4 space-y-4"></div>
+    </section>
+  </main>
+
+  <!-- scripts -->
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/club.js"></script>
+
+  <!-- ✅ Script to set Go to Polls link -->
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const clubId = params.get("id");
+    if (clubId) {
+      document.getElementById("pollsLink").href = `polls.html?id=${clubId}`;
+    } else {
+      document.getElementById("pollsLink").classList.add("hidden");
+    }
+  </script>
+</body>
+</html>
+
+
+

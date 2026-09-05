@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>AnimeTracker — Discover</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="brand">
+        <img src="assets/images/logo.png" alt="AnimeTracker" class="logo" />
+        <span class="brand-name">AnimeTracker</span>
+      </div>
+
+      <nav class="main-nav">
+        <a href="index.html" class="nav-link">Dashboard</a>
+        <a href="my-list.html" class="nav-link">My List</a>
+        <a href="discover.html" class="nav-link active">Discover</a>
+        <a href="clubs.html" class="nav-link">Clubs</a>
+      </nav>
+
+      <div class="actions">
+        <button id="themeToggle3" class="btn-ghost">Dark</button>
+        <a href="login.html" class="btn btn-outline">Login</a>
+        <a href="signup.html" class="btn btn-primary">Sign Up</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container main-content">
+    <section>
+      <h1>Discover Anime</h1>
+      <p class="muted">Find your next favorite series from our collection.</p>
+
+      <div class="controls">
+        <div class="search-wrap full">
+          <input id="discoverSearch" placeholder="Search for anime titles, genres, or studios..." />
+        </div>
+      </div>
+
+      <div id="discoverGrid" class="card-grid mt-lg"></div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">© <span id="year3"></span> AnimeTracker</div>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/discover.js"></script>
+</body>
+</html>
