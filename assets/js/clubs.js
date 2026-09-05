@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const searchInput = document.getElementById("clubSearch");
 
   async function loadClubs(search = "") {
-    let query = supabase.from("clubs").select("id, name, description");
+    let query = supabaseClient.from("clubs").select("id, name, description");
 
     if (search) {
       query = query.ilike("name", `%${search}%`);
@@ -54,8 +54,3 @@ document.addEventListener("DOMContentLoaded", async () => {
     loadClubs(e.target.value.trim());
   });
 });
-
-
-
-
-  
