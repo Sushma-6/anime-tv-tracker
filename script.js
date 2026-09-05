@@ -6,11 +6,11 @@ const SUPABASE_URL = "https://hfhvbvddffbezjecqusy.supabase.co";
 const SUPABASE_ANON_KEY =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhmaHZidmRkZmZiZXpqZWNxdXN5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NTUyNjMsImV4cCI6MjA3NDUzMTI2M30.6_n4KVqrK6KlivcrD5CQeAcp1Wr8Ng_8Jqp2e_uiviA";
 
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 /* -------------------- LOGIN -------------------- */
 async function login(email, password) {
-  const { data, error } = await supabase.auth.signInWithPassword({
+  const { data, error } = await supabaseClient.auth.signInWithPassword({
     email,
     password,
   });
@@ -26,7 +26,7 @@ async function login(email, password) {
 
 /* -------------------- SIGNUP -------------------- */
 async function signup(email, password) {
-  const { data, error } = await supabase.auth.signUp({
+  const { data, error } = await supabaseClient.auth.signUp({
     email,
     password,
   });
@@ -42,7 +42,7 @@ async function signup(email, password) {
 
 /* -------------------- CLUBS -------------------- */
 async function loadClubs() {
-  const { data: clubs, error } = await supabase.from("clubs").select("*");
+  const { data: clubs, error } = await supabaseClient.from("clubs").select("*");
 
   if (error) {
     console.error("Error fetching clubs:", error);
@@ -197,4 +197,3 @@ document.addEventListener("DOMContentLoaded", () => {
   // Create charts on page load (if canvases exist)
   createCharts();
 });
-

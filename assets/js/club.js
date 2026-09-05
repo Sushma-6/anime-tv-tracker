@@ -9,7 +9,7 @@ if (!clubId) {
 
 // ✅ Fetch club details
 async function fetchClub() {
-  const { data, error } = await supabase
+  const { data, error } = await supabaseClient
     .from("clubs")
     .select("id, name, description")
     .eq("id", clubId)

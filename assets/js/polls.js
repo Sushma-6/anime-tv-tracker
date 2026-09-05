@@ -1,7 +1,7 @@
 // Supabase init
-const SUPABASE_URL = "https://YOUR_PROJECT.supabase.co";
-const SUPABASE_ANON_KEY = "YOUR_ANON_KEY";
-const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const SUPABASE_URL = "https://hfhvbvddffbezjecqusy.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhmaHZidmRkZmZiZXpqZWNxdXN5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NTUyNjMsImV4cCI6MjA3NDUzMTI2M30.6_n4KVqrK6KlivcrD5CQeAcp1Wr8Ng_8Jqp2e_uiviA";
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // --- Elements
 const pollQuestionInput = document.getElementById("pollQuestion");
@@ -30,7 +30,7 @@ createPollBtn.addEventListener("click", async () => {
     return;
   }
 
-  const { data: poll, error: pollError } = await supabase
+  const { data: poll, error: pollError } = await supabaseClient
     .from("polls")
     .insert([{ question }])
     .select()
@@ -43,7 +43,7 @@ createPollBtn.addEventListener("click", async () => {
   }
 
   const optionRows = options.map(text => ({ poll_id: poll.id, text }));
-  await supabase.from("poll_options").insert(optionRows);
+  await supabaseClient.from("poll_options").insert(optionRows);
 
   pollQuestionInput.value = "";
   document.querySelectorAll(".pollOption").forEach((opt, i) => {
@@ -57,7 +57,7 @@ createPollBtn.addEventListener("click", async () => {
 // --- Load polls
 async function loadPolls() {
   pollsList.innerHTML = "";
-  const { data: polls, error } = await supabase
+  const { data: polls, error } = await supabaseClient
     .from("polls")
     .select("id, question, poll_options (id, text, poll_votes (id))");
 
@@ -83,7 +83,7 @@ async function loadPolls() {
 
 // --- Cast a vote
 async function vote(optionId) {
-  const { error } = await supabase.from("poll_votes").insert([{ option_id: optionId }]);
+  const { error } = await supabaseClient.from("poll_votes").insert([{ option_id: optionId }]);
   if (error) {
     console.error(error);
     alert("Error voting");
@@ -94,4 +94,3 @@ async function vote(optionId) {
 
 // Initial load
 loadPolls();
-

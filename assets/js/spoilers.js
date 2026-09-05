@@ -19,7 +19,7 @@ spoilerForm.addEventListener("submit", async (e) => {
   const content = spoilerContent.value.trim();
   if (!content) return;
 
-  const { data, error } = await supabase
+  const { data, error } = await supabaseClient
     .from("spoilers")
     .insert([{ club_id: clubId, content }]);
 
@@ -36,7 +36,7 @@ spoilerForm.addEventListener("submit", async (e) => {
 
 // ✅ Fetch spoilers
 async function fetchSpoilers() {
-  const { data, error } = await supabase
+  const { data, error } = await supabaseClient
     .from("spoilers")
     .select("id, content, created_at")
     .eq("club_id", clubId)
@@ -66,4 +66,3 @@ async function fetchSpoilers() {
 }
 
 document.addEventListener("DOMContentLoaded", fetchSpoilers);
-
